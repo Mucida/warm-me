@@ -1,6 +1,11 @@
 {
   "name": "warm-me",
-  "owner": { "name": "Lucas Mucida" },
+  "owner": {
+    "name": "Lucas Mucida"
+  },
+  "metadata": {
+    "description": "warm-me: a Claude Code mod that shows whether the prompt cache is warm or cold."
+  },
   "plugins": [
     {
       "name": "warm-me",
