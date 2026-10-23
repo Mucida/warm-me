@@ -1,0 +1,11 @@
+{
+  "name": "warm-me",
+  "owner": { "name": "Lucas Mucida" },
+  "plugins": [
+    {
+      "name": "warm-me",
+      "source": "./",
+      "description": "Shows whether the session's prompt cache is warm or cold, with a shrinking pixel-art fire and a countdown."
+    }
+  ]
+}

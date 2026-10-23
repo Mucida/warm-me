@@ -1,0 +1,10 @@
+{
+  "name": "warm-me",
+  "version": "0.1.0",
+  "description": "Shows whether the session's prompt cache is warm or cold: a pixel-art fire that shrinks each quarter of the TTL, a countdown, and a sparkling snowflake once it expires.",
+  "author": { "name": "Lucas Mucida", "url": "https://github.com/Mucida" },
+  "repository": "https://github.com/Mucida/warm-me",
+  "license": "MIT",
+  "keywords": ["prompt-cache", "cache", "band", "pixel-art"],
+  "types": "./types/index.d.ts"
+}
