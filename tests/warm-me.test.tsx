@@ -56,3 +56,33 @@ test('o fogo encolhe a cada quarto do TTL e vira gelo quando o cache esfria', as
 
   await ui.unmount()
 })
+
+test('turno parado esperando o usuário não segura o cache quente', async ($, on) => {
+  const relogio = mock.clock(on)
+  on('command.register', () => ({ value: { command: 'warm-me' } }))
+  on('store.get', () => ({ value: 5 }))
+  on('session.start', (_, e) => ({ cwd: e.cwd }))
+  on('ui.render', ($, e) => {
+    const { Text } = $.ui.resolve(e)
+
+    return <Text>pokemon</Text>
+  })
+  on('turn.step', async function* (_, e) {
+    return { turnId: e.turnId, index: e.index, answer: '', toolUses: [], stopReason: 'end_turn', usage: null }
+  })
+
+  await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+  for await (const _ of $.turn.step({ turnId: 't1', index: 0, model: 'claude-opus-5-5', messageCount: 1 })) {
+    // só o horário da requisição importa
+  }
+
+  // O turno segue "em andamento" (uma pergunta aberta), mas sem requisição nova o cache envelhece.
+  const ui = await $.ui.mount({ ...BANDA, props: { ...BANDA.props, isWorking: true } })
+  await relogio.advance(60 * SEG)
+  expect((await ui.find({ type: 'Text', text: /^4:00$/ }))?.text).toBe('4:00')
+
+  await relogio.advance(241 * SEG)
+  expect((await ui.find({ type: 'Text', text: /frio/ }))?.text).toBe('frio')
+
+  await ui.unmount()
+})

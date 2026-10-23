@@ -14,7 +14,7 @@ A pixel-art fire sits at the left of the band above the prompt. While the cache 
 | 15 min or less | tiny fire, red timer |
 | expired | snowflake, `frio` |
 
-While Claude is answering, the timer shows `quente` (the cache is being refreshed right then).
+The countdown keeps running while a turn is open: a turn waiting on your answer to a question, or on a long tool call, sends no request and does not refresh the cache.
 
 ![The five states](docs/states.png)
 

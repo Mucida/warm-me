@@ -75,13 +75,13 @@ export const register: Register = on => {
     const tick = await read($, agora)
     const t = Math.max(tick, await $.clock.now())
 
-    const restante = e.props.isWorking ? ttlMs : ultima === null ? 0 : ultima + ttlMs - t
+    // Conta sempre da última requisição, mesmo com o turno em andamento: um turno parado numa
+    // pergunta ao usuário ou numa ferramenta demorada não renova o cache (antes mostrava "quente").
+    const restante = ultima === null ? 0 : ultima + ttlMs - t
     const quente = restante > 0
     // Arredonda para cima: com exatamente 1/4 do TTL restante (15 min no de 1 h) já é o menor fogo.
     const quarto = Math.max(0, Math.min(3, Math.ceil((restante / ttlMs) * 4) - 1))
-    const rotulo = quente
-      ? e.props.isWorking ? 'quente' : formatar(restante)
-      : 'frio'
+    const rotulo = quente ? formatar(restante) : 'frio'
 
     const { Box, Text } = $.ui.resolve(e)
     let sprite
