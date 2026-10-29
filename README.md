@@ -23,7 +23,7 @@ The countdown keeps running while a turn is open: a turn waiting on your answer 
 At the prompt of a Claude Code terminal session:
 
 ```
-/plugin install warm-me --marketplace Mucida/warm-me
+/plugin install warm-me --marketplace mucida-claude-mods/warm-me
 ```
 
 Answer `y` to add the marketplace, then choose a scope (user scope shows it in every project).
@@ -31,7 +31,7 @@ Answer `y` to add the marketplace, then choose a scope (user scope shows it in e
 From a shell:
 
 ```bash
-claude plugin install warm-me --marketplace Mucida/warm-me
+claude plugin install warm-me --marketplace mucida-claude-mods/warm-me
 ```
 
 ## Usage
@@ -69,6 +69,20 @@ The images in this README are mockups of the band, not screenshots.
 ## Em português
 
 Mod do Claude Code que mostra se o cache de prompt da sessão ainda está quente: um foguinho em pixel art que diminui a cada quarto do TTL, com um timer, e vira um floco de gelo brilhando quando o cache esfria. Não gasta tokens. Use `/warm-me 5` ou `/warm-me 60` para escolher o TTL.
+
+## More mods by the same author / Mais mods do mesmo autor
+
+All in one place: **[github.com/mucida-claude-mods](https://github.com/mucida-claude-mods)**
+
+| Mod | What it does |
+| --- | --- |
+| [warm-me](https://github.com/mucida-claude-mods/warm-me) | Pixel-art fire showing whether the prompt cache is still warm |
+| [critical-decisions](https://github.com/mucida-claude-mods/critical-decisions) | Shows the critical decisions the agent made without asking |
+| [indicador-de-contexto](https://github.com/mucida-claude-mods/indicador-de-contexto) | Warns when to split or compact the chat (250k / 400k) |
+| [novo-chat-ou-aqui](https://github.com/mucida-claude-mods/novo-chat-ou-aqui) | Should this extra step run here or in a new chat? |
+| [pendencias](https://github.com/mucida-claude-mods/pendencias) | Chats that ended waiting on you |
+| [telinha-mcp](https://github.com/mucida-claude-mods/telinha-mcp) | Which MCP the agent just called, in plain words |
+| [faixa-de-terreno](https://github.com/mucida-claude-mods/faixa-de-terreno) | Branch, issue, dirty files and commits ahead of main |
 
 ## License
 
