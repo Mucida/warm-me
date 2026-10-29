@@ -1,5 +1,7 @@
 import { expect, mock, test } from 'claude-code/testing'
 
+import { forkRenovouCache } from '../hooks/register'
+
 const BANDA = {
   plugin: 'warm-me',
   component: 'AbovePrompt',
@@ -85,4 +87,15 @@ test('turno parado esperando o usuário não segura o cache quente', async ($, o
   expect((await ui.find({ type: 'Text', text: /frio/ }))?.text).toBe('frio')
 
   await ui.unmount()
+})
+
+const uso = (lido: number) => ({ input_tokens: 10, output_tokens: 1, cache_read_input_tokens: lido, cache_creation_input_tokens: 10 })
+
+// O kit não dispara $.model.fork de outro plugin, então a regra é testada fora do hook.
+test('ping do keepwarm renova o timer só quando leu o cache', () => {
+  expect(forkRenovouCache({ isAnswered: true, text: 'warm', usage: uso(90_000) })).toBe(true)
+  expect(forkRenovouCache({ isAnswered: true, text: 'warm', usage: uso(0) })).toBe(false)
+  // Cortado depois de ler: a leitura aconteceu e renovou o TTL.
+  expect(forkRenovouCache({ isAnswered: false, reason: 'aborted', usage: uso(90_000) })).toBe(true)
+  expect(forkRenovouCache({ isAnswered: false, reason: 'nothing-to-fork' })).toBe(false)
 })

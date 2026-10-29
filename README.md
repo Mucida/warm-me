@@ -46,13 +46,14 @@ The choice is saved across sessions.
 
 - It costs **no tokens**: the mod never calls the model. It only records the local time of each main-thread request (`turn.step`) and counts down from there.
 - Each request reads or writes the prompt cache and refreshes its TTL, so "last request + TTL" is a close estimate. The API does not report the exact expiry, so it is an estimate, not a reading.
+- A `$.model.fork` from another mod counts too when it read the cache, such as a keepwarm ping from cache-tax: it sends the main conversation's transcript, so a cache read refreshes the TTL. A fork that read nothing (the cache was already gone) does not.
 - Subagent requests are ignored: they have their own cache prefix and do not keep the main conversation warm.
 - The sprites are SVG with SMIL animation, drawn as images (`hooks/sprites.ts`). Only the timer redraws once a second.
 - On the terminal, which has no SVG, it shows 🔥 or ❄ with the timer.
 
 ## What it accesses
 
-Hooks `session.start`, `command.run` (`/warm-me`), `turn.step` and `ui.render` (`AbovePrompt`). Calls `$.clock`, `$.state`, `$.store` (only its own TTL setting), `$.command.register` and `$.ui.resolve`. No files, processes or network.
+Hooks `session.start`, `command.run` (`/warm-me`), `turn.step`, `model.fork` (only reads the result's token usage) and `ui.render` (`AbovePrompt`). Calls `$.clock`, `$.state`, `$.store` (only its own TTL setting), `$.command.register` and `$.ui.resolve`. No files, processes or network.
 
 ## Development
 

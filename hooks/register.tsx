@@ -1,5 +1,5 @@
 import { atom, read, update } from 'claude-code'
-import type { Register } from 'claude-code'
+import type { ModelForkResult, Register } from 'claude-code'
 
 import { FOGO, GELO } from './sprites'
 
@@ -19,6 +19,13 @@ function formatar(ms: number): string {
   const seg = total % 60
 
   return `${min}:${String(seg).padStart(2, '0')}`
+}
+
+// Um fork de outro mod (o ping do keepwarm do cache-tax) manda a transcrição da conversa
+// principal e, se leu o cache, renovou o TTL dele também. Sem leitura, o prefixo foi regravado
+// por um pedido que termina noutro ponto e a conversa não reaproveita: não conta.
+export function forkRenovouCache(resposta: ModelForkResult): boolean {
+  return 'usage' in resposta && resposta.usage.cache_read_input_tokens > 0
 }
 
 export const register: Register = on => {
@@ -62,6 +69,16 @@ export const register: Register = on => {
     }
 
     return yield* next(e)
+  })
+
+  on('model.fork', async ($, e, next) => {
+    const t = await $.clock.now()
+    const resposta = await next(e)
+    if ('value' in resposta && resposta.value !== undefined && forkRenovouCache(resposta.value)) {
+      await update($, ultimaRequisicao, anterior => Math.max(anterior ?? 0, t))
+    }
+
+    return resposta
   })
 
   on('ui.render', { component: 'AbovePrompt' }, async ($, e, next) => {
