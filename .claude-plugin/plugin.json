@@ -1,6 +1,6 @@
 {
   "name": "warm-me",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Shows whether the session's prompt cache is warm or cold: a pixel-art fire that shrinks each quarter of the TTL, a countdown, and a sparkling snowflake once it expires.",
   "author": { "name": "Lucas Mucida", "url": "https://github.com/mucida-claude-mods" },
   "repository": "https://github.com/mucida-claude-mods/warm-me",
